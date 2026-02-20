@@ -1,6 +1,6 @@
 const EmptyOrder = () => {
   return (
-    <section className="order-container">
+    <section className="empty-order-container">
       <h2>Your Cart (0)</h2>
       <div className="order-empty-img-container">
         <img

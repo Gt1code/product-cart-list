@@ -11,6 +11,10 @@
   background-color: var(--Rose-50);
 }
 
+.lucide {
+  stroke-width: 3; /* Use a higher value for a bolder look */
+}
+
 .container {
   padding: 2rem;
   width: 100%;
@@ -37,6 +41,12 @@ h1 {
   gap: 0.4rem;
 }
 
+.food-box--selected {
+  .food-img {
+    border: 2px solid var(--Red);
+  }
+}
+
 .food-img-box {
   position: relative;
   width: 100%;
@@ -46,33 +56,36 @@ h1 {
     width: 100%;
     border-radius: var(--radius);
   }
+}
 
-  .food-cart-btn {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%) translateY(50%);
-    z-index: 10;
-    white-space: nowrap;
+.food-cart-btn {
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.7em 1.5em;
+  border: 1px solid var(--Rose-500);
+  background-color: white;
+  color: var(--Rose-900);
+}
+.cart-icon {
+  width: 20px;
+  height: auto;
+}
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.7em 1.5em;
-    width: fit-content;
-    border: 1px solid var(--Rose-500);
-    border-radius: 2rem;
-    font-weight: var(--font-medium);
-    font-size: 20px;
-    background-color: white;
-    color: var(--Rose-900);
-
-    .cart-icon {
-      width: 30px;
-      height: auto;
-    }
-  }
+.food-cart-btn,
+.quantity-control {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(50%);
+  z-index: 10;
+  white-space: nowrap;
+  flex-shrink: 1;
+  display: flex;
+  align-items: center;
+  width: 170px;
+  border-radius: 2rem;
+  font-weight: var(--font-medium);
+  font-size: 20px;
 }
 
 .food-cart-btn:hover {
@@ -81,25 +94,87 @@ h1 {
   cursor: pointer;
 }
 
-.food-category {
+.quantity-control {
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 0.7em;
+  border: none;
+  background-color: var(--Red);
+  color: var(--Rose-100);
+  font-size: 16px;
+
+  .quantity-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: var(--font-bold);
+    width: 20px;
+    height: 20px;
+    font-size: 18px;
+    border: 1.5px solid var(--Rose-100);
+    border-radius: 100%;
+    padding: 2px;
+    background-color: transparent;
+    cursor: pointer;
+
+    .quantity-plus-icon,
+    .quantity-minus-icon {
+      color: var(--Rose-100);
+      width: 20px;
+      height: auto;
+      font-weight: var(--font-bold);
+    }
+  }
+
+  .quantity-btn:hover {
+    background-color: var(--Rose-50);
+
+    .quantity-plus-icon,
+    .quantity-minus-icon {
+      color: var(--Red);
+    }
+  }
+}
+
+.quantity-control:hover {
+  color: white;
+  border: none;
+}
+
+.food-description {
   margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.food-category {
   color: var(--Rose-500);
+  font-size: var(--product-names);
 }
 
 .food-name {
   font-weight: var(--font-medium);
-  font-size: 18px;
+  font-size: var(--product-names);
 }
 
 .food-price {
   color: var(--Red);
   font-weight: var(--font-medium);
-  font-size: 18px;
+  font-size: var(--product-names);
 }
 
 /* Order Section */
 
+.order-section {
+  display: flex;
+  justify-content: center;
+}
+
 .order-container {
+  width: 100%;
+  max-width: 550px;
+  height: fit-content;
   background-color: white;
   padding: 1.5rem;
   border-radius: var(--radius);
@@ -183,10 +258,14 @@ h1 {
   font-size: 14px;
 }
 
-.order-total {
+.order-summary {
   margin-top: 1rem;
-  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
 
+.order-total {
   p {
     display: flex;
     align-items: center;
@@ -206,27 +285,130 @@ h1 {
   }
 }
 
+.carbon-neutral {
+  background-color: var(--Rose-100);
+  border-radius: var(--radius);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.7rem 2rem;
+  white-space: nowrap;
+  gap: 0.3rem;
+  font-size: 12px;
+}
+
+.carbon {
+  color: var(--Rose-900);
+  font-weight: var(--font-medium);
+}
+
 .confirm-order {
   width: 100%;
 }
 
 .confirm-order-btn {
-  margin-top: 1rem;
-  padding: 0.7em 1.5em;
+  padding: 1.2em 1.5em;
   width: 100%;
   border: none;
   border-radius: 1.5rem;
   font-weight: var(--font-normal);
-  font-size: 14px;
+  font-size: 12px;
   background-color: var(--Red);
   color: white;
+  transition: all 0.15s ease-in-out;
 }
 
 .confirm-order-btn:hover {
+  background-color: var(--Rose-700);
   cursor: pointer;
 }
 
-@media screen and (min-width: 481px) and (max-width: 1024px) {
+/* modal */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem;
+  width: min(100%, 480px);
+  max-height: 85vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modal-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 1rem 0;
+}
+
+.modal-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.modal-item-img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.modal-item-details {
+  flex: 1;
+}
+
+.modal-total {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.modal-cancel-btn,
+.modal-confirm-btn {
+  flex: 1;
+  padding: 0.875rem;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.modal-cancel-btn {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.modal-confirm-btn {
+  background: hsl(14, 86%, 42%); /* match your confirm-order-btn color */
+  color: #fff;
+}
+
+@media screen and (min-width: 481px) and (max-width: 1023px) {
   .container {
     padding: 4rem;
   }
@@ -248,7 +430,7 @@ h1 {
   }
 }
 
-@media screen and (min-width: 1025px) {
+@media screen and (min-width: 1023px) {
   .container {
     flex-direction: row;
   }
@@ -275,5 +457,10 @@ h1 {
         height: auto;
       }
     }
+  }
+
+  .food-cart-btn,
+  .quantity-control {
+    width: 160px;
   }
 }
