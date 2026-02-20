@@ -1,6 +1,7 @@
 import { foodData } from "./data";
 import { useState, useEffect } from "react";
 import EmptyOrder from "../order-confirmation/EmptyOrder";
+import { X } from "lucide-react";
 
 const FoodSection = () => {
   const storedFood = localStorage.getItem("foodItem");
@@ -75,24 +76,60 @@ const FoodSection = () => {
       <section className="order-section">
         <article className="order-container">
           {foodItem.length > 0 ? (
-            <div className="order-container">
+            <div className="orders">
               <h2>Your Cart ({foodItem.length})</h2>
 
-              <div className="order-items">
-                {foodItem.map((item) => (
-                  <div key={item.name} className="order-item">
-                    <p>{item.name}</p>
-                    <p>${item.price}</p>
-                    <button onClick={() => handleRemoveFromCart(item)}>
-                      Remove
-                    </button>
-                  </div>
-                ))}
+              <section className="order-items">
+                {/* Deduplicate items and calculate quantity for each */}
+                {[
+                  ...new Map(
+                    foodItem.map((item) => [item.name, item]),
+                  ).values(),
+                ].map((item) => {
+                  const quantity = foodItem.filter(
+                    (i) => i.name === item.name,
+                  ).length;
+                  const itemTotal = (quantity * item.price).toFixed(2);
+
+                  return (
+                    <article key={item.name} className="order-item">
+                      <div className="order-details">
+                        <h3 className="order-item-name">{item.name}</h3>
+                        <p className="order-price-list">
+                          <span className="quantity">{quantity}x</span>
+                          <span className="order-item-price">
+                            {" "}
+                            @ ${item.price}
+                          </span>
+                          <span className="order-item-total">
+                            {" "}
+                            ${itemTotal}
+                          </span>
+                        </p>
+                      </div>
+
+                      <X
+                        className="remove-item-icon"
+                        onClick={() => handleRemoveFromCart(item)}
+                      />
+                    </article>
+                  );
+                })}
+              </section>
+
+              {/* total order section */}
+              <div className="order-total">
+                <p>
+                  <span>Order Total</span>{" "}
+                  <span>${calculateTotalPrice()}</span>{" "}
+                </p>
               </div>
 
-              <div className="order-total">
-                <p>Total: ${calculateTotalPrice()}</p>
-                <button onClick={handleCheckout}>Checkout</button>
+              {/* confirm order button */}
+              <div className="confirm-order">
+                <button className="confirm-order-btn" onClick={handleCheckout}>
+                  Confirm Order
+                </button>
               </div>
             </div>
           ) : (

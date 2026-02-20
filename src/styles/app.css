@@ -101,11 +101,12 @@ h1 {
 
 .order-container {
   background-color: white;
-  padding: 1rem;
+  padding: 1.5rem;
   border-radius: var(--radius);
 
   h2 {
     color: var(--Red);
+    margin-bottom: 1rem;
   }
 
   .order-empty-img-container {
@@ -119,6 +120,110 @@ h1 {
     font-weight: var(--font-medium);
     color: var(--Rose-900);
   }
+}
+
+.order-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--Rose-100);
+}
+
+.remove-item-icon {
+  color: var(--Rose-300);
+  width: 20px;
+  height: auto;
+  padding: 2px;
+  font-weight: var(--font-medium);
+  border: 1.5px solid var(--Rose-300);
+  border-radius: 100%;
+}
+
+.remove-item-icon:hover {
+  cursor: pointer;
+  color: var(--Rose-900);
+  border-color: var(--Rose-900);
+}
+
+.order-details {
+  padding: 0.5em 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.order-item-name {
+  font-weight: var(--font-medium);
+  font-size: 14px;
+  color: var(--Rose-900);
+}
+
+.order-price-list {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.quantity {
+  color: var(--Red);
+  font-weight: var(--font-medium);
+}
+
+.order-item-price {
+  color: rgb(145, 141, 141);
+  font-weight: var(--font-medium);
+  font-size: 14px;
+}
+
+.order-item-total {
+  color: var(--Rose-500);
+  font-weight: var(--font-medium);
+  font-size: 14px;
+}
+
+.order-total {
+  margin-top: 1rem;
+  padding-top: 1rem;
+
+  p {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: var(--font-medium);
+    font-size: 16px;
+
+    span:first-child {
+      color: var(--Rose-500);
+    }
+
+    span:last-child {
+      color: var(--Rose-900);
+      font-size: 22px;
+      font-weight: var(--font-bold);
+    }
+  }
+}
+
+.confirm-order {
+  width: 100%;
+}
+
+.confirm-order-btn {
+  margin-top: 1rem;
+  padding: 0.7em 1.5em;
+  width: 100%;
+  border: none;
+  border-radius: 1.5rem;
+  font-weight: var(--font-normal);
+  font-size: 14px;
+  background-color: var(--Red);
+  color: white;
+}
+
+.confirm-order-btn:hover {
+  cursor: pointer;
 }
 
 @media screen and (min-width: 481px) and (max-width: 1024px) {
