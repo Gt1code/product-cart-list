@@ -79,7 +79,7 @@ export const foodData = [
   {
     image: {
       thumbnail: "./assets/images/image-brownie-thumbnail.jpg",
-      mobile: "./assets/images/image-brownie-mobile.jpg",
+      mobile: "./assets/images/image-brownie-mobile.webp",
       tablet: "./assets/images/image-brownie-tablet.jpg",
       desktop: "./assets/images/image-brownie-desktop.jpg",
     },

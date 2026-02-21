@@ -1,5 +1,5 @@
 import "./styles/app.css";
-import FoodSection from "./food-carts/FoodSection";
+import FoodSection from "./components/food-carts/FoodSection";
 
 function App() {
   return (

@@ -28,6 +28,7 @@
 }
 
 h1 {
+  font-size: 3rem;
   margin-bottom: 2rem;
 }
 
@@ -112,8 +113,8 @@ h1 {
     justify-content: center;
     align-items: center;
     font-weight: var(--font-bold);
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     font-size: 18px;
     border: 1.5px solid var(--Rose-100);
     border-radius: 100%;
@@ -312,12 +313,12 @@ h1 {
 
 .confirm-order-btn,
 .modal-confirm-btn {
-  padding: 1.2em 1.5em;
+  padding: 1.3em 1.5em;
   width: 100%;
   border: none;
   border-radius: 1.5rem;
   font-weight: var(--font-normal);
-  font-size: 12px;
+  font-size: 14px;
   background-color: var(--Red);
   color: white;
   transition: all 0.15s ease-in-out;
@@ -455,6 +456,10 @@ h1 {
 }
 
 @media screen and (min-width: 481px) and (max-width: 1023px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+
   .container {
     padding: 3.5rem;
   }
@@ -474,9 +479,18 @@ h1 {
       }
     }
   }
+
+  .confirm-order-btn,
+  .modal-confirm-btn {
+    padding: 1.2em 1.5em;
+  }
 }
 
 @media screen and (min-width: 1023px) {
+  h1 {
+    font-size: 2rem;
+  }
+
   .container {
     padding: 4rem;
     flex-direction: row;
@@ -509,5 +523,11 @@ h1 {
   .food-cart-btn,
   .quantity-control {
     width: 160px;
+  }
+
+  .confirm-order-btn,
+  .modal-confirm-btn {
+    padding: 1.2em 1.5em;
+    font-size: 12px;
   }
 }

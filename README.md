@@ -1,24 +1,26 @@
-# Frontend Mentor - Product list with cart
+# Frontend Mentor - Product list with cart solution
 
-![Design preview for the Product list with cart coding challenge](./preview.jpg)
+## Table of contents
 
-## Welcome! 👋
+- [Overview](#overview)
+  - [The challenge](#the-challenge)
+  - [Screenshot](#screenshot)
+  - [Links](#links)
+  - [Built with](#built-with)
+  - [What I learned](#what-i-learned)
+  - [Useful resources](#useful-resources)
+  - [AI Collaboration](#ai-collaboration)
+- [Author](#author)
 
-Thanks for checking out this front-end coding challenge.
+---
 
-[Frontend Mentor](https://www.frontendmentor.io) challenges help you improve your coding skills by building realistic projects.
+## Overview
 
-**To do this challenge, you need a good understanding of HTML, CSS and JavaScript.**
+This is a solution to the [Product list with cart challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/product-list-with-cart-5MmqLVAp_d). Frontend Mentor challenges help you improve your coding skills by building realistic projects.
 
-## The challenge
+### The challenge
 
-Your challenge is to build out this product list project that includes a functional cart and get it looking as close to the design as possible.
-
-You can use any tools you like to help you complete the challenge. So, if you have something you'd like to practice, feel free to give it a go.
-
-We provide the data for the products in a local `data.json` file. So you can use that to populate the UI dynamically if you choose.
-
-Your users should be able to:
+Users should be able to:
 
 - Add items to the cart and remove them
 - Increase/decrease the number of items in the cart
@@ -26,86 +28,104 @@ Your users should be able to:
 - Reset their selections when they click "Start New Order"
 - View the optimal layout for the interface depending on their device's screen size
 - See hover and focus states for all interactive elements on the page
+- Have their cart persist across page refreshes via localStorage
 
-Want some support on the challenge? [Join our community](https://www.frontendmentor.io/community) and ask questions in the **#help** channel.
+### Screenshot
 
-## Where to find everything
+![active orders screenshot](./public/screenshots/d-active-orders.jpeg)
+![order confirmation screenshot](./public/screenshots/d-modal.png)
 
-Your task is to build out the project to the designs inside the `/design` folder. You will find both a mobile and a desktop version of the design.
+### Links
 
-The designs are in JPG static format. Using JPGs will mean that you'll need to use your best judgment for styles such as `font-size`, `padding` and `margin`.
+- Live Site URL: [dessertlist.vercel.app](https://dessertlist.vercel.app)
 
-If you would like the Figma design file to gain experience using professional tools and build more accurate projects faster, you can [subscribe as a PRO member](https://www.frontendmentor.io/pro).
+---
 
-All the required assets for this project are in the `/assets` folder. The images are already exported for the correct screen size and optimized.
+### Built with
 
-We also include variable and static font files for the required fonts for this project. You can choose to either link to Google Fonts or use the local font files to host the fonts yourself. Note that we've removed the static font files for the font weights that aren't needed for this project.
+- Semantic HTML5 markup
+- CSS custom properties
+- Flexbox
+- CSS Grid
+- Mobile-first workflow
+- Google fonts (https://fonts.google.com/)
+- [React](https://reactjs.org/) - JS library
+- [Vite](https://vitejs.dev/) - Build tool and dev server
+- [Lucide React](https://lucide.dev/) - Icon library
 
-There is also a `style-guide.md` file containing the information you'll need, such as color palette and fonts.
+### What I learned
 
-## Using AI coding assistants
+**Responsive images with `<picture>`**
 
-We've included two files to help you if you're using AI coding assistants (like Claude, GitHub Copilot, Cursor, etc.) while working on this challenge:
+One of the bigger performance wins was properly implementing responsive images. Instead of serving a large desktop image to all screen sizes, I used the `<picture>` element with multiple `<source>` tags to serve the right image at the right breakpoint:
 
-- `AGENTS.md` - Contains detailed instructions for AI assistants on how to help you with this challenge. It's tailored to this challenge's difficulty level, so the AI will provide guidance appropriate to your learning stage—offering more support for beginner challenges and encouraging more independence on advanced ones.
-- `CLAUDE.md` - A pointer file that directs Claude-based tools to the AGENTS.md instructions.
+```jsx
+<picture>
+  <source media="(min-width: 1024px)" srcSet={food.image.desktop} />
+  <source media="(min-width: 640px)" srcSet={food.image.tablet} />
+  <img
+    className="food-img"
+    src={food.image.mobile}
+    alt={food.name}
+    fetchPriority={index === 0 ? "high" : "auto"}
+    loading={index === 0 ? "eager" : "lazy"}
+  />
+</picture>
+```
 
-**How to use them:** You don't need to do anything! These files are automatically detected by most AI coding tools. The AI will read them and adjust its behavior to be a better learning partner—guiding you toward solutions rather than just giving you the answers.
+using `fetchPriority="high"` on the first image (the LCP element) improves perceived load time.
 
-**Note:** These files are designed to help you _learn_, not to do the work for you. The AI is instructed to ask questions, give hints, and explain concepts rather than writing complete solutions.
+**Cart state with localStorage persistence**
 
-## Building your project
+I used a lazy initializer in `useState` to hydrate cart state from localStorage on first render, avoiding an extra re-render:
 
-Feel free to use any workflow that you feel comfortable with. Below is a suggested process, but do not feel like you need to follow these steps:
+```js
+const [foodItem, setFoodItem] = useState(() => {
+  const stored = localStorage.getItem("foodItem");
+  return stored ? JSON.parse(stored) : [];
+});
+```
 
-1. Initialize your project as a public repository on [GitHub](https://github.com/). Creating a repo will make it easier to share your code with the community if you need help. If you're not sure how to do this, [have a read-through of this Try Git resource](https://try.github.io/).
-2. Configure your repository to publish your code to a web address. This will also be useful if you need some help during a challenge as you can share the URL for your project with your repo URL. There are a number of ways to do this, and we provide some recommendations below.
-3. Look through the designs to start planning out how you'll tackle the project. This step is crucial to help you think ahead for CSS classes to create reusable styles.
-4. Before adding any styles, structure your content with HTML. Writing your HTML first can help focus your attention on creating well-structured content.
-5. Write out the base styles for your project, including general content styles, such as `font-family` and `font-size`.
-6. Start adding styles to the top of the page and work down. Only move on to the next section once you're happy you've completed the area you're working on.
+**Deduplicating cart items for display**
 
-## Deploying your project
+Since the cart stores one object per item instance (to track quantity via array length), I needed a clean way to deduplicate for the order summary and modal. Using `Map` keyed by item name does this in one line:
 
-As mentioned above, there are many ways to host your project for free. Our recommend hosts are:
+```js
+const uniqueItems = [
+  ...new Map(foodItem.map((item) => [item.name, item])).values(),
+];
+```
 
-- [GitHub Pages](https://pages.github.com/)
-- [Vercel](https://vercel.com/)
-- [Netlify](https://www.netlify.com/)
+**Component decomposition**
 
-You can host your site using one of these solutions or any of our other trusted providers. [Read more about our recommended and trusted hosts](https://medium.com/frontend-mentor/frontend-mentor-trusted-hosting-providers-bf000dfebe).
+I broke a large single-file component into focused, reusable pieces — `FoodCard`, `FoodGrid`, `QuantityControl`, `OrderSummary`, `OrderItem`, `OrderSection`, `OrderModal`, and `ModalItem`. Each component has a single responsibility and receives only the props it needs, making the codebase much easier to reason about and maintain.
 
-## Create a custom `README.md`
+### Continued development
 
-We strongly recommend overwriting this `README.md` with a custom one. We've provided a template inside the [`README-template.md`](./README-template.md) file in this starter code.
+- Migrate cart state to a React Context or Zustand store to avoid prop drilling through the component tree
+- Add keyboard navigation support for the quantity controls
+- Explore animating the cart item additions and modal entrance for a more polished UX
+- Convert images to WebP format for further performance improvements
+- Add unit tests for the cart logic (add, increment, decrement, remove)
 
-The template provides a guide for what to add. A custom `README` will help you explain your project and reflect on your learnings. Please feel free to edit our template as much as you like.
+### Useful resources
 
-Once you've added your information to the template, delete this file and rename the `README-template.md` file to `README.md`. That will make it show up as your repository's README file.
+- [web.dev - Responsive images](https://web.dev/learn/design/responsive-images) - Comprehensive guide that helped me understand `srcset`, `sizes`, and the `<picture>` element properly
+- [web.dev - Optimize LCP](https://web.dev/articles/optimize-lcp) - Helped me understand `fetchPriority` and how to reduce Largest Contentful Paint
+- [MDN - Array.findLastIndex](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLastIndex) - Used for the cart decrement logic to remove only the last instance of an item
 
-## Submitting your solution
+### AI Collaboration
 
-Submit your solution on the platform for the rest of the community to see. Follow our ["Complete guide to submitting solutions"](https://medium.com/frontend-mentor/a-complete-guide-to-submitting-solutions-on-frontend-mentor-ac6384162248) for tips on how to do this.
+I used **Claude (Anthropic)** throughout this project as a development aid.
 
-Remember, if you're looking for feedback on your solution, be sure to ask questions when submitting it. The more specific and detailed you are with your questions, the higher the chance you'll get valuable feedback from the community.
+- **Performance optimization** — Claude helped me interpret Lighthouse audit warnings and implement fixes, including responsive images with `<picture>`, `fetchPriority` for the LCP image, `loading="lazy"` for below-fold images, and `width`/`height` attributes to eliminate layout shift.
+- **Component refactoring** — After building the core functionality in a single component, I worked with Claude to identify clean component boundaries and split the code into focused, reusable pieces.
 
-## Sharing your solution
+What worked well: using Claude to explain _why_ a warning existed, not just what to change
 
-There are multiple places you can share your solution:
+---
 
-1. Share your solution page in the **#finished-projects** channel of our [community](https://www.frontendmentor.io/community).
-2. Tweet [@frontendmentor](https://twitter.com/frontendmentor) and mention **@frontendmentor**, including the repo and live URLs in the tweet. We'd love to take a look at what you've built and help share it around.
-3. Share your solution on other social channels like LinkedIn.
-4. Blog about your experience building your project. Writing about your workflow, technical choices, and talking through your code is a brilliant way to reinforce what you've learned. Great platforms to write on are [dev.to](https://dev.to/), [Hashnode](https://hashnode.com/), and [CodeNewbie](https://community.codenewbie.org/).
+## Author
 
-We provide templates to help you share your solution once you've submitted it on the platform. Please do edit them and include specific questions when you're looking for feedback.
-
-The more specific you are with your questions the more likely it is that another member of the community will give you feedback.
-
-## Got feedback for us?
-
-We love receiving feedback! We're always looking to improve our challenges and our platform. So if you have anything you'd like to mention, please email hi[at]frontendmentor[dot]io.
-
-This challenge is completely free. Please share it with anyone who will find it useful for practice.
-
-**Have fun building!** 🚀
+- Frontend Mentor - [@Gt1code](https://www.frontendmentor.io/profile/Gt1code)
+- GitHub - [@Gt1code](https://github.com/Gt1code)
