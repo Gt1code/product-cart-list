@@ -15,13 +15,8 @@ const FoodSection = () => {
   }, [foodItem]);
 
   const handleConfirmOrder = () => setShowModal(true);
-  const handleCancelOrder = () => setShowModal(false);
-  const handleFinalCheckout = () => {
-    setShowModal(false);
-    handleCheckout(); // your existing checkout logic
-  };
 
-  // Helper to get quantity of a specific item in cart
+  // get quantity of a specific item in cart
   const getItemQuantity = (itemName) => {
     return foodItem.filter((i) => i.name === itemName).length;
   };
@@ -52,7 +47,7 @@ const FoodSection = () => {
   const clearCart = () => setFoodItem([]);
 
   const handleCheckout = () => {
-    alert("Checkout successful! Thank you for your order.");
+    setShowModal(false);
     clearCart();
   };
 
@@ -216,17 +211,18 @@ const FoodSection = () => {
           )}
 
           {/* confirmation modal */}
-          {showModal === true && (
-            <div className="modal-overlay" onClick={handleCancelOrder}>
+          {showModal && (
+            <div className="modal-overlay">
               <div className="modal" onClick={(e) => e.stopPropagation()}>
-                <img
-                  src="./assets/images/icon-order-confirmed.svg"
-                  alt="order confirmed"
-                />
-                <h2>Confirm Your Order</h2>
-                <p className="modal-subtitle">
-                  Review your items before placing the order.
-                </p>
+                <div className="modal-header">
+                  <img
+                    src="./assets/images/icon-order-confirmed.svg"
+                    alt="order confirmed"
+                    className="order-confirmed-icon"
+                  />
+                  <h2>Order Confirmed</h2>
+                  <p className="modal-subtitle">We hope you enjoy your food!</p>
+                </div>
 
                 <section className="modal-items">
                   {[
@@ -239,7 +235,7 @@ const FoodSection = () => {
                     return (
                       <article key={item.name} className="modal-item">
                         <img
-                          src={item.image.tablet}
+                          src={item.image.thumbnail}
                           alt={item.name}
                           className="modal-item-img"
                         />
@@ -254,29 +250,26 @@ const FoodSection = () => {
                             </span>
                           </p>
                         </div>
+
                         <span className="modal-item-total">${itemTotal}</span>
                       </article>
                     );
                   })}
+
+                  {/* modal total price */}
+                  <div className="modal-total">
+                    <span>Order Total</span>
+                    <span>${calculateTotalPrice()}</span>
+                  </div>
                 </section>
 
-                <div className="modal-total">
-                  <span>Order Total</span>
-                  <span>${calculateTotalPrice()}</span>
-                </div>
-
+                {/* start new order CTA */}
                 <div className="modal-actions">
                   <button
-                    className="modal-cancel-btn"
-                    onClick={handleCancelOrder}
-                  >
-                    Cancel
-                  </button>
-                  <button
                     className="modal-confirm-btn"
-                    onClick={handleFinalCheckout}
+                    onClick={handleCheckout}
                   >
-                    Place Order
+                    Start New Order
                   </button>
                 </div>
               </div>
