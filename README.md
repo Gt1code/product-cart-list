@@ -32,8 +32,8 @@ Users should be able to:
 
 ### Screenshot
 
-![active orders screenshot](./public/screenshots/d-active-orders.jpeg)
-![order confirmation screenshot](./public/screenshots/d-modal.png)
+![active orders screenshot](./public/screenshots/d-active.jpeg)
+![order confirmation screenshot](./public/screenshots/d-mode.png)
 
 ### Links
 
