@@ -46,7 +46,7 @@ const FoodCard = ({
       <div className="food-description">
         <p className="food-category">{food.category}</p>
         <p className="food-name">{food.name}</p>
-        <p className="food-price">${food.price}</p>
+        <p className="food-price">${food.price.toFixed(2)}</p>
       </div>
     </section>
   );

@@ -30,7 +30,7 @@ const OrderSummary = ({
         <div className="order-total">
           <p>
             <span>Order Total</span>
-            <span>${totalPrice}</span>
+            <span>${totalPrice.toFixed(2)}</span>
           </p>
         </div>
         <div className="carbon-neutral">

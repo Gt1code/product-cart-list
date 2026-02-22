@@ -29,7 +29,7 @@ const OrderModal = ({ foodItem, getItemQuantity, totalPrice, onCheckout }) => {
           ))}
           <div className="modal-total">
             <span>Order Total</span>
-            <span>${totalPrice}</span>
+            <span>${totalPrice.toFixed(2)}</span>
           </div>
         </section>
 
